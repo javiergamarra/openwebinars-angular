@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      About
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+  <ion-slides pager>
+
+    <ion-slide>
+      <talks></talks>
+    </ion-slide>
+
+    <ion-slide>
+      <ion-card>
+        <ion-card-header>New Talk</ion-card-header>
+        <ion-card-content>
+
+
+          <p color="primary" padding>Ejemplo</p>
+
+          <ion-item>
+            <ion-label floating>Talk title</ion-label>
+            <ion-input type="text" #title></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label stacked color="primary">Date</ion-label>
+            <ion-datetime #date></ion-datetime>
+          </ion-item>
+
+          <button ion-button (click)="onSubmit(title.value, date.value)">Save</button>
+        </ion-card-content>
+
+      </ion-card>
+    </ion-slide>
+
+
+  </ion-slides>
+</ion-content>
