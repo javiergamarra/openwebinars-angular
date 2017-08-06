@@ -2,6 +2,11 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { TalkService } from '../talk.service';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/retry';
+import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/observable/fromEvent';
 import { Router } from '@angular/router';
 
 
@@ -14,8 +19,8 @@ import { Router } from '@angular/router';
     <div #element></div>
 
     <label for="search">Search</label>
-    <input type="text" id="search" #search>
-
+    <input (keyup)="onKeyUp(search.value)" id="search" #search>
+    
     <app-talk *ngFor="let talk of talks | async" [talk]="talk"
               (talkClicked)="log($event)"></app-talk>
 
@@ -50,6 +55,8 @@ export class TalksComponent implements OnInit {
 
   onKeyUp(value) {
     console.log('clicked!' + value);
+
+    this.talks = this.talkService.getFilteredTalks(value);
   }
 
   log($event) {
