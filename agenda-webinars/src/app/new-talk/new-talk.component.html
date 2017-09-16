@@ -29,7 +29,7 @@
     <label for="description">Description of the talk</label>
     <input type="text" id="description" name="description"
            [formControl]="descriptionControl"
-           required minlength="30">
+           required minlength="15">
   </div>
 
   <button type="submit" [disabled]="userForm.invalid">Send talk!</button>

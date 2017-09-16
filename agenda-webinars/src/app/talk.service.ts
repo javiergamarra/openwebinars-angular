@@ -1,6 +1,9 @@
-import { Injectable } from '@angular/core';
-import { Http, URLSearchParams } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
+import {Injectable} from '@angular/core';
+import {Headers, Http, URLSearchParams} from '@angular/http';
+import {Observable} from 'rxjs/Observable';
+import {Talk} from './talk';
+
+const URL = 'https://data-agenda.wedeploy.io/talks';
 
 @Injectable()
 export class TalkService {
@@ -17,11 +20,18 @@ export class TalkService {
         '*': {'operator': 'fuzzy', 'value': {'query': filter}}
       }));
 
-    return this.http.get(
-      'http://data.agenda.wedeploy.io/talks', {params})
+    return this.http.get(URL, {params})
       .map(x => x.json())
       .map(x => x.documents)
       .retry(10);
+  }
+
+  saveTalk(talk: Talk) {
+
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+
+    return this.http.post(URL, JSON.stringify(talk), {headers});
   }
 
 }

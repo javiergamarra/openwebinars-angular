@@ -1,5 +1,6 @@
-import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import {Component, ElementRef, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {FormBuilder, FormControl, Validators} from '@angular/forms';
+import {TalkService} from "../talk.service";
 
 @Component({
   selector: 'app-new-talk',
@@ -15,7 +16,7 @@ export class NewTalkComponent implements OnInit {
 
   @ViewChild('elemento') elemento: ElementRef;
 
-  constructor(private fb: FormBuilder, private renderer: Renderer2) {
+  constructor(private fb: FormBuilder, private renderer: Renderer2, private talkService: TalkService) {
 
     this.descriptionControl =
       new FormControl('descripcion', Validators.compose([Validators.required, this.myValidacion]));
@@ -32,8 +33,8 @@ export class NewTalkComponent implements OnInit {
   }
 
   myValidacion(formControl: FormControl) {
-    if (formControl.value.indexOf('codemotion') != -1) {
-      return {'invalidConference': true}
+    if (formControl.value.indexOf('codemotion') !== -1) {
+      return {'invalidConference': true};
     }
   }
 
@@ -44,6 +45,15 @@ export class NewTalkComponent implements OnInit {
   onSubmit() {
     console.log(this.userForm);
     console.log(this.userForm.controls.title.touched);
+
+
+    this.talkService.saveTalk({
+      title: this.userForm.value['title'],
+      date: new Date()
+    }).subscribe(
+      x => console.log(x),
+      err => console.log(err)
+    );
   }
 
 }
