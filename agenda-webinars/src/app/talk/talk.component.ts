@@ -1,15 +1,5 @@
-import {
-  Component,
-  ComponentFactoryResolver,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  ViewChild,
-  ViewContainerRef
-} from '@angular/core';
-import { FavoriteTalkComponent } from '../favorite-talk/favorite-talk.component';
-import { ActivatedRoute } from '@angular/router';
+import {Component, ComponentFactoryResolver, EventEmitter, Input, OnInit, Output, ViewChild, ViewContainerRef} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-talk',
@@ -22,11 +12,9 @@ import { ActivatedRoute } from '@angular/router';
   ],
   template: `
     <p [ngStyle]="style" (click)="onClick()">
-
-      {{talk?.date | date:'HH:mm'}}
-
       {{talk?.title | titlecase}}
-
+      -
+      {{talk?.date | date:'HH:mm'}}
     </p>
     <div #favorite></div>
   `,
@@ -52,14 +40,13 @@ export class TalkComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.favorite.createComponent(
-      this.factory.resolveComponentFactory(FavoriteTalkComponent));
+    // this.favorite.createComponent(
+    //   this.factory.resolveComponentFactory(FavoriteTalkComponent));
   }
 
   onClick() {
     console.log(this.talk);
     this.talkClicked.emit(this.talk);
   }
-
 
 }

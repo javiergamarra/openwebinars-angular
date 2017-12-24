@@ -9,25 +9,24 @@ const URL = 'https://data-agenda.wedeploy.io/talks';
 export class TalkService {
 
   constructor(private http: Http) {
-    // network operation
   }
 
   getFilteredTalks(filter?): Observable<Array<any>> {
 
     const params = new URLSearchParams();
-    params.set('search',
-      JSON.stringify({
-        '*': {'operator': 'fuzzy', 'value': {'query': filter}}
-      }));
+    if (filter) {
+      params.set('filter',
+        JSON.stringify([{
+          'and': [{'title': {'operator': 'similar', 'value': {'query': filter}}}]
+        }]));
+    }
 
     return this.http.get(URL, {params})
       .map(x => x.json())
-      .map(x => x.documents)
       .retry(10);
   }
 
   saveTalk(talk: Talk) {
-
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
 
