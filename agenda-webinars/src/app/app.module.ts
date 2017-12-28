@@ -9,6 +9,7 @@ import { TalksComponent } from './talks/talks.component';
 import { RouterModule } from '@angular/router';
 import { TalkComponent } from './talk/talk.component';
 import { LoggedInGuard } from './logged-in.guard';
+import {HttpClientModule} from "@angular/common/http";
 
 const routes = [
   {'path': 'talks', component: TalksComponent},
@@ -25,7 +26,7 @@ const routes = [
   ],
   imports: [
     BrowserModule,
-    HttpModule,
+    HttpClientModule,
     CoreModule,
     TalksModule,
     RouterModule.forRoot(routes)

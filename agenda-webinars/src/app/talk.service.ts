@@ -1,19 +1,22 @@
 import {Injectable} from '@angular/core';
-import {Headers, Http, URLSearchParams} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import {Talk} from './talk';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import 'rxjs/add/observable/from';
+import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/operator/toArray';
 
 const URL = 'https://data-agenda.wedeploy.io/talks';
 
 @Injectable()
 export class TalkService {
 
-  constructor(private http: Http) {
+  constructor(private http: HttpClient) {
   }
 
   getFilteredTalks(filter?): Observable<Array<any>> {
 
-    const params = new URLSearchParams();
+    const params = new HttpParams();
     if (filter) {
       params.set('filter',
         JSON.stringify([{
@@ -22,13 +25,18 @@ export class TalkService {
     }
 
     return this.http.get(URL, {params})
-      .map(x => x.json())
-      .retry(10);
+      .flatMap((x: any) => Observable.from(x))
+      .map(x => {
+        console.log(x);
+        return x;
+      })
+      .retry(10)
+      .toArray();
   }
 
   saveTalk(talk: Talk) {
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
+    let headers = new HttpHeaders();
+    headers = headers.set('Content-Type', 'application/json');
 
     return this.http.post(URL, JSON.stringify(talk), {headers});
   }
