@@ -16,9 +16,9 @@ export class TalkService {
 
   getFilteredTalks(filter?): Observable<Array<any>> {
 
-    const params = new HttpParams();
+    let params = new HttpParams();
     if (filter) {
-      params.set('filter',
+      params = params.set('filter',
         JSON.stringify([{
           'and': [{'title': {'operator': 'similar', 'value': {'query': filter}}}]
         }]));
